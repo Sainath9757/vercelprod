@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notifications | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .notif-item{display:flex;align-items:flex-start;gap:1rem;padding:1rem;border:1px solid var(--border-light);border-radius:var(--r-xl);background:var(--bg-card);transition:all var(--t-fast);margin-bottom:0.75rem;}
+    .notif-item:hover{box-shadow:var(--shadow-sm);}
+    .notif-item.unread{border-left:3px solid var(--primary);background:var(--primary-subtle);}
+    .notif-dot{width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+    .notif-body{flex:1;}
+    .notif-title{font-weight:600;font-size:0.9rem;color:var(--text-primary);margin-bottom:0.2rem;}
+    .notif-desc{font-size:0.825rem;color:var(--text-secondary);line-height:1.5;}
+    .notif-time{font-size:0.75rem;color:var(--text-muted);white-space:nowrap;}
+    .filter-row{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+    .filter-chip{display:inline-flex;align-items:center;gap:0.35rem;padding:0.35rem 0.875rem;border-radius:var(--r-full);border:1.5px solid var(--border-light);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all var(--t-fast);color:var(--text-secondary);}
+    .filter-chip.active,.filter-chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-subtle);}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main">
+  <div class="nav-container"><div class="nav-content">
+    <a href="student-dashboard.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-graduation-cap"></i></div><span class="brand-label">Student Portal</span></a>
+    <div class="nav-links">
+      <a href="student-dashboard.html" class="nav-link"><i class="fas fa-home icon"></i><span>Home</span></a>
+      <a href="student-assignment-view.html" class="nav-link"><i class="fas fa-list-check icon"></i><span>Assignments</span></a>
+      <a href="student-materials-view.html" class="nav-link"><i class="fas fa-book icon"></i><span>Materials</span></a>
+      <a href="student-calendly-zoom-meeting.html" class="nav-link"><i class="fas fa-calendar-days icon"></i><span>Meetings</span></a>
+      <a href="student-notifications.html" class="nav-link is-active"><i class="fas fa-bell icon"></i><span>Alerts</span></a>
+    </div>
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+      <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div></div>
+</nav>
+<div class="grid-container">
+  <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+    <div><h1><i class="fas fa-bell text-purple"></i> Notifications</h1><p>Stay updated with your learning journey</p></div>
+    <button class="btn btn-outline btn-sm" onclick="markAllRead()"><i class="fas fa-check-double"></i> Mark all read</button>
+  </div>
+  <div class="filter-row">
+    <div class="filter-chip active" onclick="setChip(this)">All</div>
+    <div class="filter-chip" onclick="setChip(this)">Assignments</div>
+    <div class="filter-chip" onclick="setChip(this)">Meetings</div>
+    <div class="filter-chip" onclick="setChip(this)">Materials</div>
+    <div class="filter-chip" onclick="setChip(this)">Fees</div>
+    <div class="filter-chip" onclick="setChip(this)">Announcements</div>
+  </div>
+  <!-- Unread -->
+  <div class="text-xs font-semibold text-muted mb-3" style="text-transform:uppercase;letter-spacing:0.06em;">Unread (3)</div>
+  <div class="notif-item unread">
+    <div class="notif-dot" style="background:var(--danger-bg);color:var(--danger);"><i class="fas fa-exclamation-circle"></i></div>
+    <div class="notif-body">
+      <div class="notif-title">Assignment Due Tomorrow!</div>
+      <div class="notif-desc">Azure Data Factory Pipeline is due on May 5. Make sure to submit before 11:59 PM.</div>
+    </div>
+    <div class="notif-time">1 hour ago</div>
+  </div>
+  <div class="notif-item unread">
+    <div class="notif-dot" style="background:var(--primary-subtle);color:var(--primary);"><i class="fas fa-book"></i></div>
+    <div class="notif-body">
+      <div class="notif-title">New Material: SQL Module 4</div>
+      <div class="notif-desc">Dr. Sarah Johnson has uploaded new study materials for SQL Module 4. Check it out!</div>
+    </div>
+    <div class="notif-time">3 hours ago</div>
+  </div>
+  <div class="notif-item unread">
+    <div class="notif-dot" style="background:var(--warning-bg);color:var(--warning);"><i class="fas fa-wallet"></i></div>
+    <div class="notif-body">
+      <div class="notif-title">Fee Reminder</div>
+      <div class="notif-desc">May fee payment is due by May 5, 2025. Please clear dues to maintain access.</div>
+    </div>
+    <div class="notif-time">1 day ago</div>
+  </div>
+  <!-- Read -->
+  <div class="divider"></div>
+  <div class="text-xs font-semibold text-muted mb-3" style="text-transform:uppercase;letter-spacing:0.06em;">Earlier</div>
+  <div class="notif-item">
+    <div class="notif-dot" style="background:var(--success-bg);color:var(--success);"><i class="fas fa-check-circle"></i></div>
+    <div class="notif-body">
+      <div class="notif-title">Assignment Reviewed — Grade A-</div>
+      <div class="notif-desc">Your Power BI Dashboard submission has been reviewed. Grade: A- (92/100). Well done!</div>
+    </div>
+    <div class="notif-time">2 days ago</div>
+  </div>
+  <div class="notif-item">
+    <div class="notif-dot" style="background:#dbeafe;color:#2563eb;"><i class="fas fa-video"></i></div>
+    <div class="notif-body">
+      <div class="notif-title">Meeting Confirmed — May 8</div>
+      <div class="notif-desc">Your SQL Q&A session with Dr. Sarah Johnson is confirmed for May 8 at 2:00 PM.</div>
+    </div>
+    <div class="notif-time">3 days ago</div>
+  </div>
+  <div class="notif-item">
+    <div class="notif-dot" style="background:var(--primary-subtle);color:var(--primary);"><i class="fas fa-bullhorn"></i></div>
+    <div class="notif-body">
+      <div class="notif-title">Class Rescheduled</div>
+      <div class="notif-desc">The batch session on May 6 has been moved to May 7 at 5:00 PM. Plan accordingly.</div>
+    </div>
+    <div class="notif-time">4 days ago</div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function setChip(el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');}
+function markAllRead(){document.querySelectorAll('.notif-item.unread').forEach(i=>i.classList.remove('unread'));notify('All notifications marked as read','success');}
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4000);}
+</script>
+</body>
+</html>

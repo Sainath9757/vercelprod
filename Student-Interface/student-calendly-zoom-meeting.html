@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Schedule Meeting | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .meeting-card{background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--r-xl);padding:1.25rem;display:flex;align-items:center;gap:1rem;transition:all var(--t-fast);}
+    .meeting-card:hover{box-shadow:var(--shadow-md);}
+    .meeting-time{background:var(--primary-subtle);border-radius:var(--r-lg);padding:0.75rem;text-align:center;min-width:4rem;}
+    .meeting-day{font-size:1.5rem;font-weight:800;color:var(--primary);line-height:1;}
+    .meeting-month{font-size:0.7rem;text-transform:uppercase;color:var(--text-muted);font-weight:600;}
+    .platform-badge{display:inline-flex;align-items:center;gap:0.35rem;padding:0.25rem 0.6rem;border-radius:var(--r-full);font-size:0.75rem;font-weight:600;}
+    .zoom-badge{background:#e8f4fd;color:#2563eb;}
+    .calendly-embed{background:var(--bg-secondary);border-radius:var(--r-xl);padding:2rem;text-align:center;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px dashed var(--border-medium);}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main">
+  <div class="nav-container"><div class="nav-content">
+    <a href="student-dashboard.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-graduation-cap"></i></div><span class="brand-label">Student Portal</span></a>
+    <div class="nav-links">
+      <a href="student-dashboard.html" class="nav-link"><i class="fas fa-home icon"></i><span>Home</span></a>
+      <a href="student-assignment-view.html" class="nav-link"><i class="fas fa-list-check icon"></i><span>Assignments</span></a>
+      <a href="student-materials-view.html" class="nav-link"><i class="fas fa-book icon"></i><span>Materials</span></a>
+      <a href="student-calendly-zoom-meeting.html" class="nav-link is-active"><i class="fas fa-calendar-days icon"></i><span>Meetings</span></a>
+      <a href="student-submit-request.html" class="nav-link"><i class="fas fa-paper-plane icon"></i><span>Request</span></a>
+    </div>
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+      <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div></div>
+</nav>
+<div class="grid-container">
+  <div class="page-header">
+    <h1><i class="fas fa-calendar-plus text-purple"></i> Schedule a Meeting</h1>
+    <p>Book one-on-one or group sessions with your tutor</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;" class="meet-layout">
+    <!-- Upcoming meetings -->
+    <div>
+      <div class="card mb-4">
+        <div class="card-header"><div class="card-icon"><i class="fas fa-calendar-check"></i></div><h3 class="card-title">Upcoming Sessions</h3></div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+          <div class="meeting-card">
+            <div class="meeting-time"><div class="meeting-day">8</div><div class="meeting-month">May</div></div>
+            <div style="flex:1;">
+              <div class="font-semibold text-sm">SQL Deep Dive Q&A</div>
+              <div class="text-xs text-muted">2:00 PM – 3:00 PM • Dr. Sarah Johnson</div>
+              <div style="margin-top:0.4rem;"><span class="platform-badge zoom-badge"><i class="fas fa-video"></i> Zoom</span></div>
+            </div>
+            <a href="#" class="btn btn-primary btn-sm">Join</a>
+          </div>
+          <div class="meeting-card">
+            <div class="meeting-time"><div class="meeting-day">12</div><div class="meeting-month">May</div></div>
+            <div style="flex:1;">
+              <div class="font-semibold text-sm">Power BI Assignment Review</div>
+              <div class="text-xs text-muted">10:00 AM – 10:30 AM • Dr. Emily Rodriguez</div>
+              <div style="margin-top:0.4rem;"><span class="platform-badge zoom-badge"><i class="fas fa-video"></i> Zoom</span></div>
+            </div>
+            <a href="#" class="btn btn-primary btn-sm">Join</a>
+          </div>
+          <div class="meeting-card">
+            <div class="meeting-time"><div class="meeting-day">15</div><div class="meeting-month">May</div></div>
+            <div style="flex:1;">
+              <div class="font-semibold text-sm">Azure Pipeline Walkthrough</div>
+              <div class="text-xs text-muted">4:00 PM – 5:00 PM • Dr. Sarah Johnson</div>
+              <div style="margin-top:0.4rem;"><span class="platform-badge zoom-badge"><i class="fas fa-video"></i> Zoom</span></div>
+            </div>
+            <button class="btn btn-outline btn-sm">Reschedule</button>
+          </div>
+        </div>
+      </div>
+      <!-- WhatsApp contact -->
+      <div class="card" style="background:var(--primary-subtle);border-color:var(--primary-mid);">
+        <div class="card-header"><div class="card-icon" style="background:#25d366;"><i class="fab fa-whatsapp"></i></div><h3 class="card-title">Quick Contact</h3></div>
+        <p class="card-description">Can't find a suitable slot? Reach your tutor directly on WhatsApp.</p>
+        <a href="https://wa.me/919XXXXXXXXX?text=Hi%2C+I%27d+like+to+schedule+a+session" target="_blank" class="btn btn-whatsapp btn-full">
+          <i class="fab fa-whatsapp"></i> Message on WhatsApp
+        </a>
+      </div>
+    </div>
+    <!-- Calendly embed -->
+    <div class="card">
+      <div class="card-header"><div class="card-icon"><i class="fas fa-calendar-alt"></i></div><h3 class="card-title">Book via Calendly</h3></div>
+      <div class="calendly-embed">
+        <i class="fas fa-calendar-alt" style="font-size:3rem;color:var(--primary);margin-bottom:1rem;opacity:0.5;"></i>
+        <h3 style="color:var(--text-secondary);margin-bottom:0.5rem;">Calendly Booking</h3>
+        <p class="text-muted text-sm mb-4">Calendly integration will load here once tutor's link is configured by Admin.</p>
+        <a href="https://calendly.com" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Open Calendly</a>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="font-semibold text-sm mb-2">Session Types Available:</div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;"><i class="fas fa-user text-purple"></i> 1-on-1 Session (30 min)</div>
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;"><i class="fas fa-users text-purple"></i> Group Q&A (60 min)</div>
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;"><i class="fas fa-code text-purple"></i> Code Review (45 min)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4000);}
+</script>
+<style>@media(max-width:768px){.meet-layout{grid-template-columns:1fr !important;}}</style>
+</body>
+</html>

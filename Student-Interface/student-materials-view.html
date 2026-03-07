@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Learning Materials | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .material-card{background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--r-xl);padding:1.25rem;display:flex;align-items:flex-start;gap:1rem;transition:all var(--t-fast);}
+    .material-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+    .mat-icon{width:3rem;height:3rem;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:white;flex-shrink:0;}
+    .mat-body{flex:1;}
+    .mat-title{font-weight:600;font-size:0.95rem;color:var(--text-primary);margin-bottom:0.2rem;}
+    .mat-meta{font-size:0.78rem;color:var(--text-muted);margin-bottom:0.6rem;}
+    .mat-actions{display:flex;gap:0.5rem;flex-wrap:wrap;}
+    .category-tab{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;border-radius:var(--r-full);border:1.5px solid var(--border-light);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all var(--t-fast);color:var(--text-secondary);background:var(--bg-card);}
+    .category-tab.active,.category-tab:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-subtle);}
+    .mat-grid{display:flex;flex-direction:column;gap:0.875rem;}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main">
+  <div class="nav-container"><div class="nav-content">
+    <a href="student-dashboard.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-graduation-cap"></i></div><span class="brand-label">Student Portal</span></a>
+    <div class="nav-links">
+      <a href="student-dashboard.html" class="nav-link"><i class="fas fa-home icon"></i><span>Home</span></a>
+      <a href="student-assignment-view.html" class="nav-link"><i class="fas fa-list-check icon"></i><span>Assignments</span></a>
+      <a href="student-materials-view.html" class="nav-link is-active"><i class="fas fa-book icon"></i><span>Materials</span></a>
+      <a href="upload-assignment.html" class="nav-link"><i class="fas fa-upload icon"></i><span>Upload</span></a>
+      <a href="student-calendly-zoom-meeting.html" class="nav-link"><i class="fas fa-calendar-days icon"></i><span>Meetings</span></a>
+      <a href="student-submit-request.html" class="nav-link"><i class="fas fa-paper-plane icon"></i><span>Request</span></a>
+      <a href="student-notifications.html" class="nav-link"><i class="fas fa-bell icon"></i><span>Alerts</span></a>
+    </div>
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+      <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div></div>
+</nav>
+<div class="grid-container">
+  <div class="page-header">
+    <h1><i class="fas fa-book text-purple"></i> Learning Materials</h1>
+    <p>Access your course materials, notes, and resources</p>
+  </div>
+  <div class="grid-stats">
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-book"></i></div><div class="stats-label">Total Materials</div><div class="stats-value">24</div><div class="stats-change">+3 this week</div></div>
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-file-pdf"></i></div><div class="stats-label">PDFs</div><div class="stats-value">18</div><div class="stats-change">Most common</div></div>
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-video"></i></div><div class="stats-label">Videos</div><div class="stats-value">6</div><div class="stats-change">+2 this month</div></div>
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-star"></i></div><div class="stats-label">New This Week</div><div class="stats-value">5</div><div class="stats-change">Last 7 days</div></div>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="card mb-4">
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;">
+      <div class="category-tab active" onclick="setTab(this)"><i class="fas fa-th"></i> All</div>
+      <div class="category-tab" onclick="setTab(this)"><i class="fas fa-database"></i> SQL</div>
+      <div class="category-tab" onclick="setTab(this)"><i class="fas fa-cloud"></i> Azure</div>
+      <div class="category-tab" onclick="setTab(this)"><i class="fas fa-chart-bar"></i> Power BI</div>
+      <div class="category-tab" onclick="setTab(this)"><i class="fab fa-python"></i> Python</div>
+    </div>
+    <input type="text" class="form-input" placeholder="Search materials…" style="max-width:320px;">
+  </div>
+
+  <!-- Materials List -->
+  <div class="mat-grid">
+    <div class="material-card">
+      <div class="mat-icon" style="background:var(--danger);">PDF</div>
+      <div class="mat-body">
+        <div class="mat-title">SQL Server — Complete Reference Guide</div>
+        <div class="mat-meta">Added by Dr. Sarah Johnson • 2.4 MB • SQL Database • 3 days ago</div>
+        <div class="mat-actions">
+          <button class="btn btn-primary btn-sm" onclick="notify('Opening PDF…','info')"><i class="fas fa-eye"></i> View</button>
+          <button class="btn btn-outline btn-sm" onclick="notify('Download started','success')"><i class="fas fa-download"></i> Download</button>
+        </div>
+      </div>
+      <span class="badge badge-green" style="flex-shrink:0;">New</span>
+    </div>
+    <div class="material-card">
+      <div class="mat-icon" style="background:#0078d4;">PPT</div>
+      <div class="mat-body">
+        <div class="mat-title">Azure Data Factory — Week 5 Slides</div>
+        <div class="mat-meta">Added by Dr. Sarah Johnson • 8.1 MB • Microsoft Azure • 1 week ago</div>
+        <div class="mat-actions">
+          <button class="btn btn-primary btn-sm" onclick="notify('Opening slides…','info')"><i class="fas fa-eye"></i> View</button>
+          <button class="btn btn-outline btn-sm" onclick="notify('Download started','success')"><i class="fas fa-download"></i> Download</button>
+        </div>
+      </div>
+    </div>
+    <div class="material-card">
+      <div class="mat-icon" style="background:var(--warning);">VID</div>
+      <div class="mat-body">
+        <div class="mat-title">Power BI DAX Measures — Tutorial Video</div>
+        <div class="mat-meta">Added by Dr. Emily Rodriguez • 45 min • Power BI • 5 days ago</div>
+        <div class="mat-actions">
+          <button class="btn btn-primary btn-sm" onclick="notify('Opening video…','info')"><i class="fas fa-play"></i> Watch</button>
+          <button class="btn btn-outline btn-sm"><i class="fas fa-bookmark"></i> Bookmark</button>
+        </div>
+      </div>
+      <span class="badge badge-green" style="flex-shrink:0;">New</span>
+    </div>
+    <div class="material-card">
+      <div class="mat-icon" style="background:var(--success);">XLS</div>
+      <div class="mat-body">
+        <div class="mat-title">Practice Datasets — SQL Joins Exercises</div>
+        <div class="mat-meta">Added by Prof. Michael Chen • 1.2 MB • SQL Database • 2 weeks ago</div>
+        <div class="mat-actions">
+          <button class="btn btn-primary btn-sm" onclick="notify('Opening file…','info')"><i class="fas fa-eye"></i> View</button>
+          <button class="btn btn-outline btn-sm" onclick="notify('Download started','success')"><i class="fas fa-download"></i> Download</button>
+        </div>
+      </div>
+    </div>
+    <div class="material-card">
+      <div class="mat-icon" style="background:#3776ab;">PY</div>
+      <div class="mat-body">
+        <div class="mat-title">Python for Data Analysis — Notebook</div>
+        <div class="mat-meta">Added by Dr. Sarah Johnson • Jupyter Notebook • Python • 1 week ago</div>
+        <div class="mat-actions">
+          <button class="btn btn-primary btn-sm" onclick="notify('Opening notebook…','info')"><i class="fas fa-eye"></i> View</button>
+          <button class="btn btn-outline btn-sm" onclick="notify('Download started','success')"><i class="fas fa-download"></i> Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function setTab(el){document.querySelectorAll('.category-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');notify('Filter: '+el.textContent.trim(),'info');}
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4000);}
+</script>
+</body>
+</html>

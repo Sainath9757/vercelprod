@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .welcome-hero{background:var(--grad-primary);border-radius:var(--r-2xl);padding:2rem;color:white;margin-bottom:var(--sp-2xl);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+    .welcome-hero h1{font-size:clamp(1.3rem,3vw,2rem);margin:0 0 0.35rem;}
+    .welcome-hero p{opacity:0.85;margin:0;font-size:0.95rem;}
+    .hero-avatar{width:4rem;height:4rem;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+    .batch-pill{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.15);border-radius:var(--r-full);padding:0.35rem 0.875rem;font-size:0.8rem;margin-top:0.5rem;}
+    .attendance-ring{text-align:center;}
+    .ring-val{font-size:2rem;font-weight:800;color:var(--primary);}
+    .ring-label{font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;}
+    .fee-status{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;font-weight:600;}
+    .fee-paid{color:var(--success);}
+    .fee-due{color:var(--danger);}
+    .card-actions{margin-top:var(--sp-md);}
+  </style>
+</head>
+<body class="fade-in">
+
+<!-- Announcement Banner -->
+<div class="announcement-banner" id="annBanner">
+  <span><i class="fas fa-bullhorn" style="margin-right:0.5rem;"></i> <strong>New:</strong> SQL Module 4 materials have been uploaded. Check Learning Materials!</span>
+  <button class="close-btn" onclick="document.getElementById('annBanner').remove()"><i class="fas fa-times"></i></button>
+</div>
+
+<!-- NAV -->
+<nav class="nav-main">
+  <div class="nav-container">
+    <div class="nav-content">
+      <a href="student-dashboard.html" class="nav-brand">
+        <div class="nav-brand-icon"><i class="fas fa-graduation-cap"></i></div>
+        <span class="brand-label">Student Portal</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="student-dashboard.html"            class="nav-link is-active"><i class="fas fa-home icon"></i><span>Home</span></a>
+        <a href="student-assignment-view.html"       class="nav-link"><i class="fas fa-list-check icon"></i><span>Assignments</span></a>
+        <a href="student-materials-view.html"        class="nav-link"><i class="fas fa-book icon"></i><span>Materials</span></a>
+        <a href="upload-assignment.html"             class="nav-link"><i class="fas fa-upload icon"></i><span>Upload</span></a>
+        <a href="student-calendly-zoom-meeting.html" class="nav-link"><i class="fas fa-calendar-days icon"></i><span>Meetings</span></a>
+        <a href="student-submit-request.html"        class="nav-link"><i class="fas fa-paper-plane icon"></i><span>Request</span></a>
+        <a href="student-notifications.html"         class="nav-link"><i class="fas fa-bell icon"></i><span>Alerts</span></a>
+        <a href="student-Bio-edit-form.html"         class="nav-link"><i class="fas fa-user-gear icon"></i><span>Profile</span></a>
+      </div>
+      <div class="nav-actions">
+        <button id="themeToggle" class="icon-button" title="Toggle theme"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+        <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i><span>Logout</span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="grid-container">
+
+  <!-- Welcome Hero -->
+  <div class="welcome-hero">
+    <div>
+      <h1>Welcome back, John! 👋</h1>
+      <p>Here's what's happening in your learning journey today.</p>
+      <div class="batch-pill"><i class="fas fa-users"></i> Batch B2 — Data Analytics 2025</div>
+    </div>
+    <div class="hero-avatar"><i class="fas fa-user-graduate"></i></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid-stats">
+    <div class="stats-card card-hover">
+      <div class="stats-icon"><i class="fas fa-tasks"></i></div>
+      <div class="stats-label">Active Assignments</div>
+      <div class="stats-value">5</div>
+      <div class="stats-change"><i class="fas fa-arrow-up"></i> 2 due this week</div>
+    </div>
+    <div class="stats-card card-hover">
+      <div class="stats-icon"><i class="fas fa-video"></i></div>
+      <div class="stats-label">Upcoming Meetings</div>
+      <div class="stats-value">3</div>
+      <div class="stats-change">Next: Tomorrow 2 PM</div>
+    </div>
+    <div class="stats-card card-hover">
+      <div class="stats-icon"><i class="fas fa-chart-line"></i></div>
+      <div class="stats-label">Progress Score</div>
+      <div class="stats-value">87%</div>
+      <div class="stats-change"><i class="fas fa-arrow-up"></i> +5% this month</div>
+    </div>
+    <div class="stats-card card-hover">
+      <div class="stats-icon"><i class="fas fa-calendar-check"></i></div>
+      <div class="stats-label">Attendance</div>
+      <div class="stats-value">92%</div>
+      <div class="stats-change">18 of 20 sessions</div>
+    </div>
+  </div>
+
+  <!-- Fee + Attendance quick view -->
+  <div class="card mt-4 mb-5" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
+    <div>
+      <div class="text-xs text-muted font-semibold mb-2" style="text-transform:uppercase;letter-spacing:0.06em;">Fee Status</div>
+      <div class="fee-status fee-paid"><i class="fas fa-check-circle"></i> April Fee — Paid</div>
+      <div class="fee-status fee-due mt-2"><i class="fas fa-exclamation-circle"></i> May Fee — Due by May 5</div>
+    </div>
+    <div class="attendance-ring">
+      <div class="ring-val">92%</div>
+      <div class="ring-label">Attendance</div>
+      <div class="progress-bar mt-2" style="width:140px;">
+        <div class="progress-bar-fill" style="width:92%;"></div>
+      </div>
+    </div>
+    <div>
+      <a href="https://wa.me/919XXXXXXXXX?text=Hi%20Tutor%2C%20I%20need%20help" target="_blank" class="btn btn-whatsapp">
+        <i class="fab fa-whatsapp"></i> WhatsApp Tutor
+      </a>
+    </div>
+  </div>
+
+  <!-- Quick Action Cards -->
+  <div class="grid-cards">
+    <div class="card card-hover">
+      <div class="card-header">
+        <div class="card-icon"><i class="fas fa-tasks"></i></div>
+        <h3 class="card-title">View Assignments</h3>
+      </div>
+      <p class="card-description">Check current assignments, due dates, and submission status.</p>
+      <div class="card-actions">
+        <a href="student-assignment-view.html" class="btn btn-primary btn-full"><i class="fas fa-arrow-right"></i> Open</a>
+      </div>
+    </div>
+    <div class="card card-hover">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--success);"><i class="fas fa-folder-open"></i></div>
+        <h3 class="card-title">Learning Materials</h3>
+      </div>
+      <p class="card-description">Access course materials, study notes, and resources.</p>
+      <div class="card-actions">
+        <a href="student-materials-view.html" class="btn btn-success btn-full"><i class="fas fa-arrow-right"></i> Open</a>
+      </div>
+    </div>
+    <div class="card card-hover">
+      <div class="card-header">
+        <div class="card-icon" style="background:#0d9488;"><i class="fas fa-calendar-plus"></i></div>
+        <h3 class="card-title">Schedule Meeting</h3>
+      </div>
+      <p class="card-description">Book one-on-one sessions with your tutor via Calendly.</p>
+      <div class="card-actions">
+        <a href="student-calendly-zoom-meeting.html" class="btn btn-info btn-full"><i class="fas fa-arrow-right"></i> Open</a>
+      </div>
+    </div>
+    <div class="card card-hover">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--warning);"><i class="fas fa-upload"></i></div>
+        <h3 class="card-title">Upload Assignment</h3>
+      </div>
+      <p class="card-description">Submit completed assignments and track submissions.</p>
+      <div class="card-actions">
+        <a href="upload-assignment.html" class="btn btn-warning btn-full"><i class="fas fa-arrow-right"></i> Open</a>
+      </div>
+    </div>
+    <div class="card card-hover">
+      <div class="card-header">
+        <div class="card-icon" style="background:#6d28d9;"><i class="fas fa-paper-plane"></i></div>
+        <h3 class="card-title">Submit Request</h3>
+      </div>
+      <p class="card-description">Send questions, feedback, or special requests to your tutor.</p>
+      <div class="card-actions">
+        <a href="student-submit-request.html" class="btn btn-outline btn-full"><i class="fas fa-arrow-right"></i> Open</a>
+      </div>
+    </div>
+    <div class="card card-hover">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--danger);"><i class="fas fa-bell"></i></div>
+        <h3 class="card-title">Notifications</h3>
+      </div>
+      <p class="card-description">View updates, reminders, and announcements from your tutor.</p>
+      <div class="card-actions">
+        <a href="student-notifications.html" class="btn btn-danger btn-full"><i class="fas fa-arrow-right"></i> Open</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="card mt-5">
+    <div class="card-header">
+      <div class="card-icon"><i class="fas fa-clock-rotate-left"></i></div>
+      <h3 class="card-title">Recent Activity</h3>
+    </div>
+    <div class="activity-item">
+      <div class="activity-dot green"></div>
+      <div class="activity-text">Assignment "Data Analysis" submitted successfully</div>
+      <div class="activity-time">2 hours ago</div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-dot blue"></div>
+      <div class="activity-text">Meeting scheduled with Tutor for tomorrow at 2 PM</div>
+      <div class="activity-time">1 day ago</div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-dot purple"></div>
+      <div class="activity-text">New study material available for SQL Module 4</div>
+      <div class="activity-time">2 days ago</div>
+    </div>
+    <div class="activity-item">
+      <div class="activity-dot orange"></div>
+      <div class="activity-text">Reminder: Power BI assignment due in 3 days</div>
+      <div class="activity-time">2 days ago</div>
+    </div>
+  </div>
+
+</div>
+<div id="notif" class="notification-container"></div>
+
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4500);}
+</script>
+</body>
+</html>

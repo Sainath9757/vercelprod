@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Profile | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .profile-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap;}
+    .avatar-wrap{position:relative;flex-shrink:0;}
+    .avatar{width:5rem;height:5rem;border-radius:50%;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-size:2rem;color:white;font-weight:800;}
+    .avatar-edit{position:absolute;bottom:0;right:0;width:1.75rem;height:1.75rem;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:white;cursor:pointer;border:2px solid var(--bg-card);}
+    .form-2col{display:grid;grid-template-columns:1fr 1fr;gap:0.875rem;}
+    .section-title{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border-light);}
+    .info-row{display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0;border-bottom:1px solid var(--border-light);font-size:0.875rem;}
+    .info-row:last-child{border-bottom:none;}
+    .info-label{color:var(--text-muted);font-weight:500;}
+    .info-val{color:var(--text-primary);font-weight:600;}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main">
+  <div class="nav-container"><div class="nav-content">
+    <a href="student-dashboard.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-graduation-cap"></i></div><span class="brand-label">Student Portal</span></a>
+    <div class="nav-links">
+      <a href="student-dashboard.html" class="nav-link"><i class="fas fa-home icon"></i><span>Home</span></a>
+      <a href="student-assignment-view.html" class="nav-link"><i class="fas fa-list-check icon"></i><span>Assignments</span></a>
+      <a href="student-materials-view.html" class="nav-link"><i class="fas fa-book icon"></i><span>Materials</span></a>
+      <a href="student-Bio-edit-form.html" class="nav-link is-active"><i class="fas fa-user-gear icon"></i><span>Profile</span></a>
+    </div>
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+      <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div></div>
+</nav>
+<div class="grid-container">
+  <div class="page-header"><h1><i class="fas fa-user-gear text-purple"></i> Edit Profile</h1><p>Update your personal information and preferences</p></div>
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;align-items:start;" class="profile-layout">
+    <!-- Form -->
+    <div class="card">
+      <div class="profile-header">
+        <div class="avatar-wrap">
+          <div class="avatar">JD</div>
+          <div class="avatar-edit" onclick="notify('Photo upload coming soon','info')"><i class="fas fa-camera"></i></div>
+        </div>
+        <div>
+          <h2 style="margin:0 0 0.25rem;">John Doe</h2>
+          <div class="text-sm text-muted">student@demo.com</div>
+          <div class="mt-2"><span class="badge badge-purple"><i class="fas fa-users"></i> Batch B2 — Data Analytics 2025</span></div>
+        </div>
+      </div>
+      <form onsubmit="saveProfile(event)">
+        <div class="section-title">Personal Information</div>
+        <div class="form-2col">
+          <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" value="John" required></div>
+          <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" value="Doe" required></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" value="john.doe@example.com" required></div>
+        <div class="form-group"><label class="form-label">Phone / WhatsApp</label><input type="tel" class="form-input" value="+91 9876543210" placeholder="+91…"></div>
+        <div class="form-group"><label class="form-label">City</label><input type="text" class="form-input" value="Hyderabad"></div>
+        <div class="divider"></div>
+        <div class="section-title">Learning Preferences</div>
+        <div class="form-group"><label class="form-label">Preferred Session Timing</label>
+          <select class="form-select">
+            <option selected>Evenings (6–9 PM)</option><option>Mornings (8–11 AM)</option><option>Afternoons (1–5 PM)</option><option>Weekends only</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Short Bio</label><textarea class="form-textarea" placeholder="Tell your tutor a bit about yourself…">Data analytics enthusiast, learning SQL and Azure. Looking to transition into a data analyst role.</textarea></div>
+        <div class="divider"></div>
+        <div class="section-title">Change Password</div>
+        <div class="form-2col">
+          <div class="form-group"><label class="form-label">New Password</label><input type="password" class="form-input" placeholder="Leave blank to keep current"></div>
+          <div class="form-group"><label class="form-label">Confirm Password</label><input type="password" class="form-input" placeholder="Repeat new password"></div>
+        </div>
+        <div class="flex gap-sm flex-wrap">
+          <button type="submit" class="btn btn-primary" id="saveBtn"><i class="fas fa-save"></i> Save Changes</button>
+          <button type="reset" class="btn btn-outline"><i class="fas fa-undo"></i> Reset</button>
+        </div>
+      </form>
+    </div>
+    <!-- Summary Panel -->
+    <div>
+      <div class="card mb-4">
+        <div class="card-header"><div class="card-icon"><i class="fas fa-chart-bar"></i></div><h3 class="card-title">My Stats</h3></div>
+        <div class="info-row"><span class="info-label">Batch</span><span class="info-val">B2 — 2025</span></div>
+        <div class="info-row"><span class="info-label">Joined</span><span class="info-val">Jan 2025</span></div>
+        <div class="info-row"><span class="info-label">Attendance</span><span class="info-val" style="color:var(--success);">92%</span></div>
+        <div class="info-row"><span class="info-label">Assignments</span><span class="info-val">8 / 12 done</span></div>
+        <div class="info-row"><span class="info-label">Avg Grade</span><span class="info-val">A- (92)</span></div>
+        <div class="info-row"><span class="info-label">Tutor</span><span class="info-val">Dr. Sarah J.</span></div>
+      </div>
+      <div class="card" style="background:var(--primary-subtle);border-color:var(--primary-mid);">
+        <div class="card-header"><div class="card-icon" style="background:#25d366;"><i class="fab fa-whatsapp"></i></div><h3 class="card-title">Contact Tutor</h3></div>
+        <p class="card-description" style="margin-bottom:1rem;">Reach your tutor quickly via WhatsApp for any queries.</p>
+        <a href="https://wa.me/919XXXXXXXXX" target="_blank" class="btn btn-whatsapp btn-full"><i class="fab fa-whatsapp"></i> WhatsApp Tutor</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function saveProfile(e){e.preventDefault();const btn=document.getElementById('saveBtn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving…';setTimeout(()=>{notify('Profile updated successfully!','success');btn.disabled=false;btn.innerHTML='<i class="fas fa-save"></i> Save Changes';},1500);}
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4500);}
+</script>
+<style>@media(max-width:768px){.profile-layout{grid-template-columns:1fr !important;}.form-2col{grid-template-columns:1fr !important;}}</style>
+</body>
+</html>

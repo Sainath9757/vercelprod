@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Request | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .req-type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem;margin-bottom:1.5rem;}
+    .req-type-btn{display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:1rem 0.5rem;border:2px solid var(--border-light);border-radius:var(--r-lg);cursor:pointer;transition:all var(--t-fast);font-size:0.8rem;font-weight:600;color:var(--text-secondary);background:var(--bg-card);text-align:center;}
+    .req-type-btn i{font-size:1.5rem;}
+    .req-type-btn:hover,.req-type-btn.active{border-color:var(--primary);color:var(--primary);background:var(--primary-subtle);}
+    .request-history{display:flex;flex-direction:column;gap:0.75rem;}
+    .req-item{display:flex;align-items:flex-start;gap:0.875rem;padding:0.875rem;border:1px solid var(--border-light);border-radius:var(--r-lg);background:var(--bg-card);}
+    .req-icon{width:2rem;height:2rem;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main">
+  <div class="nav-container"><div class="nav-content">
+    <a href="student-dashboard.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-graduation-cap"></i></div><span class="brand-label">Student Portal</span></a>
+    <div class="nav-links">
+      <a href="student-dashboard.html" class="nav-link"><i class="fas fa-home icon"></i><span>Home</span></a>
+      <a href="student-assignment-view.html" class="nav-link"><i class="fas fa-list-check icon"></i><span>Assignments</span></a>
+      <a href="student-materials-view.html" class="nav-link"><i class="fas fa-book icon"></i><span>Materials</span></a>
+      <a href="student-submit-request.html" class="nav-link is-active"><i class="fas fa-paper-plane icon"></i><span>Request</span></a>
+    </div>
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+      <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div></div>
+</nav>
+<div class="grid-container">
+  <div class="page-header">
+    <h1><i class="fas fa-paper-plane text-purple"></i> Submit a Request</h1>
+    <p>Send questions, feedback, or requests to your tutor</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;" class="req-layout">
+    <div class="card">
+      <div class="card-header"><div class="card-icon"><i class="fas fa-envelope"></i></div><h3 class="card-title">New Request</h3></div>
+      <div class="req-type-grid">
+        <div class="req-type-btn active" onclick="setReqType(this)"><i class="fas fa-question-circle"></i>Question</div>
+        <div class="req-type-btn" onclick="setReqType(this)"><i class="fas fa-redo"></i>Extension</div>
+        <div class="req-type-btn" onclick="setReqType(this)"><i class="fas fa-comment-alt"></i>Feedback</div>
+        <div class="req-type-btn" onclick="setReqType(this)"><i class="fas fa-tools"></i>Technical</div>
+        <div class="req-type-btn" onclick="setReqType(this)"><i class="fas fa-ellipsis-h"></i>Other</div>
+      </div>
+      <form onsubmit="submitRequest(event)">
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input type="text" class="form-input" placeholder="Brief subject of your request…" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Priority</label>
+          <select class="form-select">
+            <option>Normal</option><option>High</option><option>Urgent</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Describe your request in detail…" style="min-height:140px;" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Attachment (optional)</label>
+          <input type="file" class="form-input" style="padding:0.4rem;">
+        </div>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <button type="submit" class="btn btn-primary" id="reqSubmitBtn"><i class="fas fa-paper-plane"></i> Send Request</button>
+          <a href="https://wa.me/919XXXXXXXXX" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+      </form>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:var(--success);"><i class="fas fa-history"></i></div><h3 class="card-title">Request History</h3></div>
+      <div class="request-history">
+        <div class="req-item">
+          <div class="req-icon" style="background:var(--success-bg);color:var(--success);"><i class="fas fa-check"></i></div>
+          <div style="flex:1;"><div class="font-semibold text-sm">Assignment extension request</div><div class="text-xs text-muted">Responded by Dr. Sarah • 2 days ago</div></div>
+          <span class="badge badge-green">Resolved</span>
+        </div>
+        <div class="req-item">
+          <div class="req-icon" style="background:var(--warning-bg);color:var(--warning);"><i class="fas fa-clock"></i></div>
+          <div style="flex:1;"><div class="font-semibold text-sm">Doubt in SQL Module 3</div><div class="text-xs text-muted">Submitted 4 days ago</div></div>
+          <span class="badge badge-orange">Pending</span>
+        </div>
+        <div class="req-item">
+          <div class="req-icon" style="background:var(--success-bg);color:var(--success);"><i class="fas fa-check"></i></div>
+          <div style="flex:1;"><div class="font-semibold text-sm">Request for extra practice material</div><div class="text-xs text-muted">Resolved 1 week ago</div></div>
+          <span class="badge badge-green">Resolved</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function setReqType(el){document.querySelectorAll('.req-type-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function submitRequest(e){e.preventDefault();const btn=document.getElementById('reqSubmitBtn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Sending…';notify('Sending your request…','info');setTimeout(()=>{notify('Request sent successfully! Your tutor will respond soon.','success');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Send Request';},1800);}
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4500);}
+</script>
+<style>@media(max-width:768px){.req-layout{grid-template-columns:1fr !important;}}</style>
+</body>
+</html>

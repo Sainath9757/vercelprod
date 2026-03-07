@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Assignment | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .upload-zone{border:2px dashed var(--border-medium);border-radius:var(--r-xl);padding:2.5rem;text-align:center;cursor:pointer;transition:all var(--t-fast);background:var(--bg-secondary);}
+    .upload-zone:hover,.upload-zone.drag-over{border-color:var(--primary);background:var(--primary-subtle);}
+    .upload-icon{font-size:2.5rem;color:var(--primary);margin-bottom:1rem;}
+    .upload-zone h3{margin-bottom:0.35rem;color:var(--text-primary);}
+    .upload-zone p{font-size:0.875rem;color:var(--text-muted);}
+    .file-preview{display:flex;align-items:center;gap:1rem;padding:0.875rem 1rem;background:var(--primary-subtle);border:1px solid var(--primary-mid);border-radius:var(--r-lg);margin-top:1rem;}
+    .file-preview-icon{font-size:1.5rem;color:var(--primary);}
+    .submission-history{display:flex;flex-direction:column;gap:0.75rem;}
+    .sub-item{display:flex;align-items:center;gap:1rem;padding:0.75rem 1rem;border:1px solid var(--border-light);border-radius:var(--r-lg);background:var(--bg-card);}
+    .sub-icon{width:2rem;height:2rem;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:white;flex-shrink:0;}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main">
+  <div class="nav-container"><div class="nav-content">
+    <a href="student-dashboard.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-graduation-cap"></i></div><span class="brand-label">Student Portal</span></a>
+    <div class="nav-links">
+      <a href="student-dashboard.html" class="nav-link"><i class="fas fa-home icon"></i><span>Home</span></a>
+      <a href="student-assignment-view.html" class="nav-link"><i class="fas fa-list-check icon"></i><span>Assignments</span></a>
+      <a href="student-materials-view.html" class="nav-link"><i class="fas fa-book icon"></i><span>Materials</span></a>
+      <a href="upload-assignment.html" class="nav-link is-active"><i class="fas fa-upload icon"></i><span>Upload</span></a>
+      <a href="student-calendly-zoom-meeting.html" class="nav-link"><i class="fas fa-calendar-days icon"></i><span>Meetings</span></a>
+    </div>
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+      <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div></div>
+</nav>
+<div class="grid-container">
+  <div class="page-header">
+    <h1><i class="fas fa-upload text-purple"></i> Upload Assignment</h1>
+    <p>Submit your completed assignments to your tutor</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;" class="upload-layout">
+    <!-- Upload Form -->
+    <div class="card">
+      <div class="card-header"><div class="card-icon"><i class="fas fa-file-upload"></i></div><h3 class="card-title">Submit Assignment</h3></div>
+      <form onsubmit="submitAssignment(event)">
+        <div class="form-group">
+          <label class="form-label">Assignment</label>
+          <select class="form-select" required>
+            <option value="">Select assignment…</option>
+            <option>Azure Data Factory Pipeline</option>
+            <option>SQL Joins Deep Dive</option>
+            <option>Data Modeling Project</option>
+            <option>Power BI Dashboard Design</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Upload File</label>
+          <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <h3>Drag & drop or click to browse</h3>
+            <p>PDF, DOCX, XLSX, ZIP • Max 50MB</p>
+          </div>
+          <input type="file" id="fileInput" style="display:none;" onchange="fileSelected(event)" accept=".pdf,.docx,.xlsx,.zip,.pptx">
+          <div id="filePreview" style="display:none;" class="file-preview">
+            <i class="fas fa-file file-preview-icon"></i>
+            <div style="flex:1;"><div id="fileName" class="font-semibold" style="font-size:0.9rem;"></div><div id="fileSize" class="text-xs text-muted"></div></div>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="clearFile()"><i class="fas fa-times"></i></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes to Tutor (optional)</label>
+          <textarea class="form-textarea" placeholder="Add any notes or comments for your tutor…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submitBtn">
+          <i class="fas fa-paper-plane"></i> Submit Assignment
+        </button>
+      </form>
+    </div>
+    <!-- Submission History -->
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:var(--success);"><i class="fas fa-history"></i></div><h3 class="card-title">Submission History</h3></div>
+      <div class="submission-history">
+        <div class="sub-item">
+          <div class="sub-icon" style="background:var(--success);"><i class="fas fa-check"></i></div>
+          <div style="flex:1;"><div class="font-semibold text-sm">SQL Joins Deep Dive</div><div class="text-xs text-muted">Submitted Apr 29, 2025 • Reviewed</div></div>
+          <span class="badge badge-green">A-</span>
+        </div>
+        <div class="sub-item">
+          <div class="sub-icon" style="background:var(--primary);"><i class="fas fa-clock"></i></div>
+          <div style="flex:1;"><div class="font-semibold text-sm">Power BI Dashboard</div><div class="text-xs text-muted">Submitted Apr 24, 2025 • Reviewed</div></div>
+          <span class="badge badge-green">B+</span>
+        </div>
+        <div class="sub-item">
+          <div class="sub-icon" style="background:var(--warning);"><i class="fas fa-spinner"></i></div>
+          <div style="flex:1;"><div class="font-semibold text-sm">Python Data Analysis</div><div class="text-xs text-muted">Submitted Apr 18, 2025 • Pending Review</div></div>
+          <span class="badge badge-orange">Pending</span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="flex gap-sm">
+        <button class="btn btn-outline btn-sm" onclick="notify('Exporting history…','info')"><i class="fas fa-download"></i> Export</button>
+        <a href="student-assignment-view.html" class="btn btn-ghost btn-sm"><i class="fas fa-list"></i> All Assignments</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function dragOver(e){e.preventDefault();document.getElementById('uploadZone').classList.add('drag-over');}
+function dragLeave(){document.getElementById('uploadZone').classList.remove('drag-over');}
+function drop(e){e.preventDefault();dragLeave();const f=e.dataTransfer.files[0];if(f)showFile(f);}
+function fileSelected(e){const f=e.target.files[0];if(f)showFile(f);}
+function showFile(f){document.getElementById('fileName').textContent=f.name;document.getElementById('fileSize').textContent=(f.size/1024/1024).toFixed(2)+' MB';document.getElementById('filePreview').style.display='flex';}
+function clearFile(){document.getElementById('filePreview').style.display='none';document.getElementById('fileInput').value='';}
+function submitAssignment(e){e.preventDefault();const btn=document.getElementById('submitBtn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Submitting…';notify('Uploading assignment…','info');setTimeout(()=>{notify('Assignment submitted successfully!','success');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Assignment';},2000);}
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4500);}
+document.addEventListener('DOMContentLoaded',()=>{const z=document.getElementById('uploadZone');if(z){z.addEventListener('dragover',dragOver);z.addEventListener('dragleave',dragLeave);z.addEventListener('drop',drop);}});
+</script>
+<style>@media(max-width:768px){.upload-layout{grid-template-columns:1fr !important;}}</style>
+</body>
+</html>

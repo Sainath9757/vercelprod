@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Assignments | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .filter-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.75rem;margin-bottom:1.5rem;}
+    .assign-card{background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--r-xl);padding:1.25rem;transition:all var(--t-normal);}
+    .assign-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+    .assign-header{display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;margin-bottom:0.75rem;}
+    .assign-meta{display:flex;flex-direction:column;gap:0.3rem;margin-bottom:0.875rem;}
+    .assign-meta-row{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-muted);}
+    .assign-footer{display:flex;gap:0.5rem;flex-wrap:wrap;}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main">
+  <div class="nav-container"><div class="nav-content">
+    <a href="student-dashboard.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-graduation-cap"></i></div><span class="brand-label">Student Portal</span></a>
+    <div class="nav-links">
+      <a href="student-dashboard.html" class="nav-link"><i class="fas fa-home icon"></i><span>Home</span></a>
+      <a href="student-assignment-view.html" class="nav-link is-active"><i class="fas fa-list-check icon"></i><span>Assignments</span></a>
+      <a href="student-materials-view.html" class="nav-link"><i class="fas fa-book icon"></i><span>Materials</span></a>
+      <a href="upload-assignment.html" class="nav-link"><i class="fas fa-upload icon"></i><span>Upload</span></a>
+      <a href="student-calendly-zoom-meeting.html" class="nav-link"><i class="fas fa-calendar-days icon"></i><span>Meetings</span></a>
+      <a href="student-submit-request.html" class="nav-link"><i class="fas fa-paper-plane icon"></i><span>Request</span></a>
+      <a href="student-notifications.html" class="nav-link"><i class="fas fa-bell icon"></i><span>Alerts</span></a>
+      <a href="student-Bio-edit-form.html" class="nav-link"><i class="fas fa-user-gear icon"></i><span>Profile</span></a>
+    </div>
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+      <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div></div>
+</nav>
+<div class="grid-container">
+  <div class="page-header">
+    <h1><i class="fas fa-list-check text-purple"></i> My Assignments</h1>
+    <p>Track progress, view feedback, and manage your submissions</p>
+  </div>
+  <div class="grid-stats">
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-tasks"></i></div><div class="stats-label">Total</div><div class="stats-value">12</div><div class="stats-change">This semester</div></div>
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-clock"></i></div><div class="stats-label">Pending</div><div class="stats-value">3</div><div class="stats-change">Due this week</div></div>
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-check-circle"></i></div><div class="stats-label">Completed</div><div class="stats-value">8</div><div class="stats-change">+2 this month</div></div>
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-star"></i></div><div class="stats-label">Avg Grade</div><div class="stats-value">A-</div><div class="stats-change">92/100 avg</div></div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="card mb-4">
+    <div class="filter-bar">
+      <div class="form-group" style="margin:0;">
+        <label class="form-label">Subject</label>
+        <select class="form-select" onchange="filterAssignments()">
+          <option>All Subjects</option><option>SQL Database</option><option>Azure</option><option>Power BI</option><option>Python</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label class="form-label">Status</label>
+        <select class="form-select" onchange="filterAssignments()">
+          <option>All Status</option><option>Pending</option><option>In Progress</option><option>Submitted</option><option>Reviewed</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label class="form-label">Sort By</label>
+        <select class="form-select"><option>Due Date</option><option>Newest</option><option>Priority</option></select>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label class="form-label">Search</label>
+        <input type="text" class="form-input" placeholder="Search…" oninput="filterAssignments()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Assignment Cards -->
+  <div class="grid-cards" id="assignGrid">
+    <!-- Pending -->
+    <div class="assign-card">
+      <div class="assign-header">
+        <h3 style="font-size:1rem;margin:0;">Azure Data Factory Pipeline</h3>
+        <span class="badge badge-orange">Pending</span>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.875rem;">Design and implement an ETL pipeline using Azure Data Factory for customer data.</p>
+      <div class="assign-meta">
+        <div class="assign-meta-row"><i class="fas fa-calendar-alt"></i> Due: May 5, 2025</div>
+        <div class="assign-meta-row"><i class="fas fa-user-tie"></i> Dr. Sarah Johnson</div>
+        <div class="assign-meta-row"><i class="fas fa-tag"></i> Microsoft Azure</div>
+      </div>
+      <div class="assign-footer">
+        <button class="btn btn-primary btn-sm" onclick="notify('Opening assignment details…','info')"><i class="fas fa-eye"></i> View Details</button>
+        <a href="upload-assignment.html" class="btn btn-outline btn-sm"><i class="fas fa-upload"></i> Submit</a>
+      </div>
+    </div>
+    <!-- In Progress -->
+    <div class="assign-card">
+      <div class="assign-header">
+        <h3 style="font-size:1rem;margin:0;">Data Modeling Project</h3>
+        <span class="badge badge-blue">In Progress</span>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.75rem;">Design a comprehensive ERD for an e-commerce platform with normalization.</p>
+      <div class="assign-meta">
+        <div class="assign-meta-row"><i class="fas fa-calendar-alt"></i> Due: May 10, 2025</div>
+        <div class="assign-meta-row"><i class="fas fa-user-tie"></i> Dr. Sarah Johnson</div>
+        <div class="assign-meta-row"><i class="fas fa-tag"></i> Data Modeling</div>
+      </div>
+      <div style="margin-bottom:0.875rem;">
+        <div class="flex justify-between text-xs text-muted mb-2"><span>Progress</span><span>65%</span></div>
+        <div class="progress-bar"><div class="progress-bar-fill" style="width:65%;"></div></div>
+      </div>
+      <div class="assign-footer">
+        <button class="btn btn-primary btn-sm" onclick="notify('Opening assignment…','info')"><i class="fas fa-eye"></i> View Details</button>
+      </div>
+    </div>
+    <!-- Submitted -->
+    <div class="assign-card">
+      <div class="assign-header">
+        <h3 style="font-size:1rem;margin:0;">SQL Joins Deep Dive</h3>
+        <span class="badge badge-purple">Submitted</span>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.875rem;">Comprehensive analysis of SQL JOIN operations with practical examples and case studies.</p>
+      <div class="assign-meta">
+        <div class="assign-meta-row"><i class="fas fa-calendar-alt"></i> Due: Apr 30, 2025</div>
+        <div class="assign-meta-row"><i class="fas fa-user-tie"></i> Prof. Michael Chen</div>
+        <div class="assign-meta-row"><i class="fas fa-tag"></i> SQL Database</div>
+      </div>
+      <div class="assign-footer">
+        <button class="btn btn-outline btn-sm" onclick="notify('Loading submission…','info')"><i class="fas fa-eye"></i> View Submission</button>
+      </div>
+    </div>
+    <!-- Reviewed -->
+    <div class="assign-card">
+      <div class="assign-header">
+        <h3 style="font-size:1rem;margin:0;">Power BI Dashboard Design</h3>
+        <span class="badge badge-green">Reviewed</span>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.875rem;">Create an interactive sales analytics dashboard using Power BI with multiple data sources.</p>
+      <div class="assign-meta">
+        <div class="assign-meta-row"><i class="fas fa-calendar-alt"></i> Due: Apr 25, 2025</div>
+        <div class="assign-meta-row"><i class="fas fa-user-tie"></i> Dr. Emily Rodriguez</div>
+        <div class="assign-meta-row"><i class="fas fa-star" style="color:var(--warning);"></i> Grade: A- (92/100)</div>
+      </div>
+      <div class="assign-footer">
+        <button class="btn btn-outline btn-sm" onclick="notify('Loading feedback…','info')"><i class="fas fa-comment"></i> View Feedback</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-sm mt-5">
+    <button class="btn btn-outline" onclick="notify('Refreshing…','info')"><i class="fas fa-sync-alt"></i> Refresh</button>
+    <button class="btn btn-outline" onclick="notify('Exporting list…','info')"><i class="fas fa-download"></i> Export</button>
+    <a href="upload-assignment.html" class="btn btn-primary"><i class="fas fa-plus"></i> Upload New</a>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function filterAssignments(){notify('Filter applied','info');}
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4000);}
+</script>
+</body>
+</html>
