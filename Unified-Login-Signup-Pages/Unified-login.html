@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <style>
+    body { background: var(--bg-secondary); }
+    .login-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    /* Left brand panel */
+    .login-brand {
+      background: var(--grad-primary);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 3rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-brand::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 250px; height: 250px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+    }
+    .login-brand::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    .brand-logo {
+      width: 3.5rem; height: 3.5rem;
+      background: rgba(255,255,255,0.15);
+      border-radius: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      position: relative; z-index: 1;
+    }
+    .brand-tagline {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      position: relative; z-index: 1;
+    }
+    .brand-sub {
+      font-size: 1rem;
+      opacity: 0.85;
+      line-height: 1.6;
+      max-width: 340px;
+      margin-bottom: 2.5rem;
+      position: relative; z-index: 1;
+    }
+    .brand-features { position: relative; z-index: 1; }
+    .brand-feature {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1rem; font-size: 0.9rem; opacity: 0.9;
+    }
+    .brand-feature i {
+      width: 1.75rem; height: 1.75rem;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; flex-shrink: 0;
+    }
+    /* Right form panel */
+    .login-form-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2rem;
+      background: var(--bg-primary);
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+    }
+    .login-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.35rem;
+    }
+    .login-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .role-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.875rem 0.5rem;
+      border: 2px solid var(--border-light);
+      border-radius: var(--r-lg);
+      background: var(--bg-card);
+      cursor: pointer;
+      transition: all var(--t-fast);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .role-btn i { font-size: 1.4rem; }
+    .role-btn:hover { border-color: var(--primary-light); color: var(--primary); background: var(--primary-subtle); }
+    .role-btn.active { border-color: var(--primary); color: var(--primary); background: var(--primary-subtle); }
+    .input-wrapper { position: relative; }
+    .input-icon {
+      position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); font-size: 0.85rem; pointer-events: none;
+    }
+    .input-icon-right {
+      position: absolute; right: 0.875rem; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); cursor: pointer; background: none; border: none;
+      padding: 0; font-size: 0.85rem;
+    }
+    .input-icon-right:hover { color: var(--primary); }
+    .form-input.has-icon-l { padding-left: 2.5rem; }
+    .form-input.has-icon-r { padding-right: 2.5rem; }
+    .forgot-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.25rem; font-size: 0.8rem;
+    }
+    .forgot-row label { display: flex; align-items: center; gap: 0.4rem; color: var(--text-secondary); cursor: pointer; }
+    .forgot-row a { color: var(--primary); font-weight: 500; }
+    .demo-box {
+      margin-top: 1.5rem;
+      background: var(--primary-subtle);
+      border: 1px solid var(--primary-mid);
+      border-radius: var(--r-lg);
+      padding: 1rem;
+    }
+    .demo-box h5 { color: var(--primary-dark); margin-bottom: 0.5rem; font-size: 0.85rem; }
+    .demo-row { font-size: 0.8rem; color: var(--primary-dark); margin-bottom: 0.25rem; }
+    .login-footer { text-align: center; margin-top: 1.75rem; font-size: 0.875rem; color: var(--text-muted); }
+    .login-footer a { color: var(--primary); font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .login-page { grid-template-columns: 1fr; }
+      .login-brand { display: none; }
+      .login-form-panel { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="login-page">
+
+  <!-- Left Brand Panel -->
+  <div class="login-brand">
+    <div class="brand-logo"><i class="fas fa-bolt"></i></div>
+    <div class="brand-tagline">Empower Your<br>Teaching Journey</div>
+    <p class="brand-sub">The all-in-one platform built for local tutors — manage students, share materials, and schedule sessions with ease.</p>
+    <div class="brand-features">
+      <div class="brand-feature"><i class="fas fa-users"></i> Manage small batches effortlessly</div>
+      <div class="brand-feature"><i class="fas fa-book-open"></i> Share materials instantly</div>
+      <div class="brand-feature"><i class="fas fa-video"></i> Schedule Zoom sessions</div>
+      <div class="brand-feature"><i class="fas fa-chart-line"></i> Track student progress</div>
+    </div>
+  </div>
+
+  <!-- Right Form Panel -->
+  <div class="login-form-panel">
+    <div class="login-card slide-up">
+      <div class="login-title">Welcome back 👋</div>
+      <p class="login-sub">Sign in to access your portal</p>
+
+      <!-- Role Selector -->
+      <div class="role-grid">
+        <button class="role-btn active" data-role="student" onclick="selectRole(this)">
+          <i class="fas fa-graduation-cap"></i> Student
+        </button>
+        <button class="role-btn" data-role="tutor" onclick="selectRole(this)">
+          <i class="fas fa-chalkboard-teacher"></i> Tutor
+        </button>
+        <button class="role-btn" data-role="admin" onclick="selectRole(this)">
+          <i class="fas fa-user-shield"></i> Admin
+        </button>
+      </div>
+
+      <!-- Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" id="email" class="form-input has-icon-l" placeholder="you@example.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="password" class="form-input has-icon-l has-icon-r" placeholder="Enter password" required>
+            <button type="button" class="input-icon-right" onclick="togglePwd()">
+              <i class="fas fa-eye" id="pwdIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="forgot-row">
+          <label><input type="checkbox"> Remember me</label>
+          <a href="#" onclick="handleForgotPassword();return false;">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submitBtn">
+          <i class="fas fa-sign-in-alt"></i> Sign In
+        </button>
+      </form>
+
+      <!-- Preview Buttons (remove before production) -->
+      <div class="demo-box">
+        <h5><i class="fas fa-eye"></i> Preview Mode — No login needed</h5>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-top:0.5rem;">
+          <button onclick="window.location.href='../Student-Interface/student-dashboard.html'" class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:0.5rem;">
+            <i class="fas fa-graduation-cap"></i><br>Student
+          </button>
+          <button onclick="window.location.href='../Tutor-Interface/Tutor-Dashboard-full.html'" class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:0.5rem;">
+            <i class="fas fa-chalkboard-teacher"></i><br>Tutor
+          </button>
+          <button onclick="window.location.href='../Admin-Interface/Admin-Dashboard.html'" class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:0.5rem;">
+            <i class="fas fa-user-shield"></i><br>Admin
+          </button>
+        </div>
+      </div>
+
+      <div class="login-footer">
+        Don't have an account? <a href="unfied-signup.html">Create account</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="notif" class="notification-container"></div>
+
+<script>
+  (function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();
+  window.onload = () => { const f = document.getElementById('loginForm'); if(f) f.reset(); };
+
+  const auth = firebase.auth();
+  const db   = firebase.firestore();
+
+  const ROUTES = {
+    student: '../Student-Interface/student-dashboard.html',
+    tutor:   '../Tutor-Interface/Tutor-Dashboard-full.html',
+    admin:   '../Admin-Interface/Admin-Dashboard.html'
+  };
+
+  // If already signed in, redirect immediately
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      db.collection('users').doc(user.uid).get().then(doc => {
+        if (doc.exists) window.location.href = ROUTES[doc.data().role] || ROUTES.student;
+      });
+    }
+  });
+
+  let selectedRole = 'student';
+
+  function selectRole(el) {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    selectedRole = el.dataset.role;
+  }
+
+  function togglePwd() {
+    const p = document.getElementById('password');
+    const i = document.getElementById('pwdIcon');
+    if (p.type === 'password') { p.type = 'text'; i.className = 'fas fa-eye-slash'; }
+    else { p.type = 'password'; i.className = 'fas fa-eye'; }
+  }
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const pwd   = document.getElementById('password').value;
+    const btn   = document.getElementById('submitBtn');
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Signing in…';
+
+    auth.signInWithEmailAndPassword(email, pwd)
+      .then(cred => db.collection('users').doc(cred.user.uid).get())
+      .then(doc => {
+        if (!doc.exists) throw new Error('Account record not found. Contact support.');
+        const userRole = doc.data().role;
+        // Guard: role selector must match stored role (prevents role spoofing)
+        if (userRole !== selectedRole) {
+          throw new Error(`Wrong portal selected. You are registered as a ${userRole}.`);
+        }
+        notify('Welcome back! Redirecting…', 'success');
+        setTimeout(() => { window.location.href = ROUTES[userRole]; }, 1200);
+      })
+      .catch(err => {
+        const msg = err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found'
+          ? 'Invalid email or password.'
+          : err.message;
+        notify(msg, 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+      });
+  }
+
+  function handleForgotPassword() {
+    const email = document.getElementById('email').value.trim();
+    if (!email) { notify('Enter your email first, then click Forgot Password.', 'error'); return; }
+    auth.sendPasswordResetEmail(email)
+      .then(() => notify('Password reset email sent! Check your inbox.', 'success'))
+      .catch(err => notify(err.message, 'error'));
+  }
+
+  function notify(msg, type='info') {
+    const c = document.getElementById('notif');
+    const n = document.createElement('div');
+    n.className = 'notification ' + type;
+    n.innerHTML = `<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+    c.appendChild(n);
+    setTimeout(() => n.remove(), 5000);
+  }
+</script>
+</body>
+</html>

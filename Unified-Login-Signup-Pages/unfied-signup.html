@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <style>
+    body{background:var(--bg-secondary);}
+    .signup-page{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;}
+    .signup-brand{background:var(--grad-primary);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:3rem;color:white;position:relative;overflow:hidden;}
+    .signup-brand::before{content:'';position:absolute;top:-60px;right:-60px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.07);}
+    .brand-logo{width:3.5rem;height:3.5rem;background:rgba(255,255,255,0.15);border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:2rem;position:relative;z-index:1;}
+    .brand-tagline{font-size:clamp(1.75rem,3vw,2.5rem);font-weight:800;line-height:1.2;margin-bottom:1rem;position:relative;z-index:1;}
+    .brand-sub{font-size:1rem;opacity:0.85;max-width:340px;margin-bottom:2rem;line-height:1.6;position:relative;z-index:1;}
+    .step{display:flex;align-items:flex-start;gap:0.875rem;margin-bottom:1.25rem;position:relative;z-index:1;}
+    .step-num{width:1.75rem;height:1.75rem;background:rgba(255,255,255,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0;}
+    .step-text{font-size:0.9rem;opacity:0.9;line-height:1.5;}
+    .signup-form-panel{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:3rem 2rem;background:var(--bg-primary);overflow-y:auto;}
+    .signup-card{width:100%;max-width:440px;}
+    .signup-title{font-size:1.75rem;font-weight:800;color:var(--text-primary);margin-bottom:0.35rem;}
+    .signup-sub{color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem;}
+    .role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.75rem;}
+    .role-btn{display:flex;flex-direction:column;align-items:center;gap:0.35rem;padding:0.875rem 0.5rem;border:2px solid var(--border-light);border-radius:var(--r-lg);background:var(--bg-card);cursor:pointer;transition:all var(--t-fast);font-size:0.8rem;font-weight:600;color:var(--text-secondary);}
+    .role-btn i{font-size:1.4rem;}
+    .role-btn.active,.role-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-subtle);}
+    .input-wrapper{position:relative;}
+    .input-icon{position:absolute;left:0.875rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.85rem;pointer-events:none;}
+    .form-input.has-icon{padding-left:2.5rem;}
+    .pwd-toggle{position:absolute;right:0.875rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:0.85rem;}
+    .pwd-toggle:hover{color:var(--primary);}
+    .form-input.has-icon-r{padding-right:2.5rem;}
+    .strength-track{height:4px;background:var(--border-light);border-radius:99px;overflow:hidden;margin-top:0.4rem;margin-bottom:0.2rem;}
+    .strength-fill{height:100%;border-radius:99px;transition:width 0.3s,background 0.3s;width:0;}
+    .name-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+    .terms-note{font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:0.75rem;}
+    .terms-note a{color:var(--primary);}
+    .signup-footer{text-align:center;margin-top:1.5rem;font-size:0.875rem;color:var(--text-muted);}
+    .signup-footer a{color:var(--primary);font-weight:600;}
+    @media(max-width:768px){.signup-page{grid-template-columns:1fr;}.signup-brand{display:none;}.signup-form-panel{padding:2rem 1.25rem;}.name-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<div class="signup-page">
+  <div class="signup-brand">
+    <div class="brand-logo"><i class="fas fa-bolt"></i></div>
+    <div class="brand-tagline">Start Your<br>Learning Journey</div>
+    <p class="brand-sub">Join hundreds of students and tutors already using DAxEmpowerApps to learn smarter.</p>
+    <div class="step"><div class="step-num">1</div><div class="step-text">Choose your role — Student, Tutor, or Admin</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Fill in your details to create your account</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">Get instant access to your personalised portal</div></div>
+  </div>
+  <div class="signup-form-panel">
+    <div class="signup-card slide-up">
+      <div class="signup-title">Create Account</div>
+      <p class="signup-sub">Fill in the details below to get started</p>
+      <div class="role-grid">
+        <button type="button" class="role-btn active" data-role="student" onclick="selectRole(this)"><i class="fas fa-graduation-cap"></i>Student</button>
+        <button type="button" class="role-btn" data-role="tutor" onclick="selectRole(this)"><i class="fas fa-chalkboard-teacher"></i>Tutor</button>
+        <button type="button" class="role-btn" data-role="admin" onclick="selectRole(this)"><i class="fas fa-user-shield"></i>Admin</button>
+      </div>
+      <form id="signupForm" onsubmit="handleSignup(event)">
+        <input type="hidden" id="role" value="student">
+        <div class="name-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" id="firstName" class="form-input has-icon" placeholder="First" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" id="lastName" class="form-input" placeholder="Last" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" id="signupEmail" class="form-input has-icon" placeholder="you@example.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone / WhatsApp</label>
+          <div class="input-wrapper">
+            <i class="fab fa-whatsapp input-icon"></i>
+            <input type="tel" id="phone" class="form-input has-icon" placeholder="+91 9XXXXXXXXX">
+          </div>
+          <span class="form-hint">Used for meeting reminders</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="signupPassword" class="form-input has-icon has-icon-r" placeholder="Min 8 characters" required oninput="checkStrength(this.value)">
+            <button type="button" class="pwd-toggle" onclick="togglePwd('signupPassword','pi1')"><i class="fas fa-eye" id="pi1"></i></button>
+          </div>
+          <div class="strength-track"><div class="strength-fill" id="sBar"></div></div>
+          <span class="form-hint" id="sLabel">Enter a password</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="confirmPwd" class="form-input has-icon has-icon-r" placeholder="Repeat password" required>
+            <button type="button" class="pwd-toggle" onclick="togglePwd('confirmPwd','pi2')"><i class="fas fa-eye" id="pi2"></i></button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submitBtn">
+          <i class="fas fa-user-plus"></i> Create Account
+        </button>
+      </form>
+      <p class="terms-note">By signing up you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>.</p>
+      <div class="signup-footer">Already have an account? <a href="Unified-login.html">Sign in</a></div>
+    </div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})();
+window.onload=()=>{const f=document.getElementById('signupForm');if(f)f.reset();};
+const auth=firebase.auth(), db=firebase.firestore();
+function selectRole(el){document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('role').value=el.dataset.role;}
+function togglePwd(id,iconId){const p=document.getElementById(id),i=document.getElementById(iconId);if(p.type==='password'){p.type='text';i.className='fas fa-eye-slash';}else{p.type='password';i.className='fas fa-eye';}}
+function checkStrength(v){const b=document.getElementById('sBar'),l=document.getElementById('sLabel');let s=0;if(v.length>=8)s++;if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;const lv=[{p:'25%',c:'#dc2626',t:'Weak'},{p:'50%',c:'#d97706',t:'Fair'},{p:'75%',c:'#2563eb',t:'Good'},{p:'100%',c:'#059669',t:'Strong'}];const lev=lv[Math.max(0,s-1)]||{p:'0%',c:'#e5e7eb',t:'Enter a password'};b.style.width=v?lev.p:'0%';b.style.background=lev.c;l.textContent=v?lev.t:'Enter a password';}
+function handleSignup(e){e.preventDefault();const pwd=document.getElementById('signupPassword').value,cpwd=document.getElementById('confirmPwd').value;if(pwd!==cpwd){notify('Passwords do not match','error');return;}if(pwd.length<8){notify('Password must be at least 8 characters','error');return;}const btn=document.getElementById('submitBtn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Creating Account…';const name=document.getElementById('firstName').value+' '+document.getElementById('lastName').value,email=document.getElementById('signupEmail').value,role=document.getElementById('role').value,phone=document.getElementById('phone').value;auth.createUserWithEmailAndPassword(email,pwd).then(c=>{return db.collection('users').doc(c.user.uid).set({uid:c.user.uid,name,email,role,phone,createdAt:new Date()});}).then(()=>{notify('Account created! Redirecting…','success');setTimeout(()=>{const r={student:'../Student-Interface/student-dashboard.html',tutor:'../Tutor-Interface/Tutor-Dashboard-full.html',admin:'../Admin-Interface/Admin-Dashboard.html'};window.location.href=r[role];},1500);}).catch(err=>{notify(err.message,'error');btn.disabled=false;btn.innerHTML='<i class="fas fa-user-plus"></i> Create Account';});}
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),5000);}
+</script>
+</body>
+</html>

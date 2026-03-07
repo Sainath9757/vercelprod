@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Access | Tutor Portal</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .access-row{display:flex;align-items:center;gap:1rem;padding:0.875rem;border-bottom:1px solid var(--border-light);}
+    .access-row:last-child{border-bottom:none;}
+    .toggle-switch{position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0;}
+    .toggle-switch input{opacity:0;width:0;height:0;}
+    .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border-medium);border-radius:24px;transition:0.3s;}
+    .toggle-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:0.3s;}
+    .toggle-switch input:checked+.toggle-slider{background:var(--primary);}
+    .toggle-switch input:checked+.toggle-slider:before{transform:translateX(18px);}
+    .stu-dot{width:2.25rem;height:2.25rem;border-radius:50%;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:0.8rem;flex-shrink:0;}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main"><div class="nav-container"><div class="nav-content">
+  <a href="Tutor-Dashboard-full.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-chalkboard-teacher"></i></div><span class="brand-label">Tutor Portal</span></a>
+  <div class="nav-links">
+    <a href="Tutor-Dashboard-full.html" class="nav-link"><i class="fas fa-home icon"></i><span>Home</span></a>
+    <a href="Tutor-access-student-profile.html" class="nav-link"><i class="fas fa-user-graduate icon"></i><span>Students</span></a>
+    <a href="Tutor-uploads-mangement.html" class="nav-link"><i class="fas fa-upload icon"></i><span>Materials</span></a>
+    <a href="Tutor-Schedule-zoom-meetings.html" class="nav-link"><i class="fas fa-calendar-plus icon"></i><span>Schedule</span></a>
+    <a href="Tutor-View-upcoming-meetings.html" class="nav-link"><i class="fas fa-calendar-check icon"></i><span>Meetings</span></a>
+    <a href="Tutor-manage-student-access.html" class="nav-link is-active"><i class="fas fa-user-shield icon"></i><span>Access</span></a>
+  </div>
+  <div class="nav-actions">
+    <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+    <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+</div></div></nav>
+<div class="grid-container">
+  <div class="page-header"><h1><i class="fas fa-user-shield text-purple"></i> Access Control</h1><p>Manage which students can access specific materials and features</p></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;" class="access-layout">
+    <!-- Material Access -->
+    <div class="card">
+      <div class="card-header"><div class="card-icon"><i class="fas fa-lock"></i></div><h3 class="card-title">Material Access</h3></div>
+      <p class="card-description">Control per-material visibility for each student or batch.</p>
+      <div>
+        <div class="text-xs font-semibold text-muted mb-3" style="text-transform:uppercase;">Select Material</div>
+        <select class="form-select mb-4" onchange="notify('Loading access settings…','info')">
+          <option>SQL Module 4 Guide</option>
+          <option>Azure Week 5 Slides</option>
+          <option>Power BI DAX Tutorial</option>
+          <option>SQL Practice Datasets</option>
+        </select>
+        <div class="text-xs font-semibold text-muted mb-2" style="text-transform:uppercase;">Student Access</div>
+        <div class="access-row"><div class="stu-dot">JD</div><div style="flex:1;"><div class="font-semibold text-sm">John Doe</div><div class="text-xs text-muted">Batch B2</div></div><label class="toggle-switch"><input type="checkbox" checked onchange="toggleAccess(this,'John')"><span class="toggle-slider"></span></label></div>
+        <div class="access-row"><div class="stu-dot" style="background:linear-gradient(135deg,#059669,#0d9488);">MG</div><div style="flex:1;"><div class="font-semibold text-sm">Maria Garcia</div><div class="text-xs text-muted">Batch B2</div></div><label class="toggle-switch"><input type="checkbox" checked onchange="toggleAccess(this,'Maria')"><span class="toggle-slider"></span></label></div>
+        <div class="access-row"><div class="stu-dot" style="background:linear-gradient(135deg,#d97706,#f59e0b);">AK</div><div style="flex:1;"><div class="font-semibold text-sm">Alex Kumar</div><div class="text-xs text-muted">Batch B1</div></div><label class="toggle-switch"><input type="checkbox" onchange="toggleAccess(this,'Alex')"><span class="toggle-slider"></span></label></div>
+        <div class="access-row"><div class="stu-dot" style="background:linear-gradient(135deg,#dc2626,#f87171);">RS</div><div style="flex:1;"><div class="font-semibold text-sm">Ravi Sharma</div><div class="text-xs text-muted">Batch B2</div></div><label class="toggle-switch"><input type="checkbox" checked onchange="toggleAccess(this,'Ravi')"><span class="toggle-slider"></span></label></div>
+      </div>
+      <div class="mt-4 flex gap-sm flex-wrap">
+        <button class="btn btn-primary btn-sm" onclick="notify('Access settings saved!','success')"><i class="fas fa-save"></i> Save Changes</button>
+        <button class="btn btn-outline btn-sm" onclick="grantAll()"><i class="fas fa-check-double"></i> Grant All</button>
+        <button class="btn btn-outline btn-sm" onclick="revokeAll()"><i class="fas fa-ban"></i> Revoke All</button>
+      </div>
+    </div>
+    <!-- Feature toggles -->
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:var(--success);"><i class="fas fa-sliders-h"></i></div><h3 class="card-title">Feature Toggles</h3></div>
+      <p class="card-description">Enable or disable platform features per student.</p>
+      <div class="text-xs font-semibold text-muted mb-3" style="text-transform:uppercase;">For: John Doe</div>
+      <div class="access-row" style="border:none;padding:0.625rem 0;border-bottom:1px solid var(--border-light);"><div style="flex:1;"><div class="font-semibold text-sm">Assignment Submission</div><div class="text-xs text-muted">Can submit assignments</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+      <div class="access-row" style="border:none;padding:0.625rem 0;border-bottom:1px solid var(--border-light);"><div style="flex:1;"><div class="font-semibold text-sm">Meeting Booking</div><div class="text-xs text-muted">Can book 1-on-1 sessions</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+      <div class="access-row" style="border:none;padding:0.625rem 0;border-bottom:1px solid var(--border-light);"><div style="flex:1;"><div class="font-semibold text-sm">Materials Download</div><div class="text-xs text-muted">Can download files</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+      <div class="access-row" style="border:none;padding:0.625rem 0;"><div style="flex:1;"><div class="font-semibold text-sm">Portal Access</div><div class="text-xs text-muted">Overall portal login</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+      <div class="mt-4"><button class="btn btn-primary btn-full" onclick="notify('Feature settings saved!','success')"><i class="fas fa-save"></i> Save Feature Settings</button></div>
+    </div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function toggleAccess(cb,name){notify(name+': access '+(cb.checked?'granted':'revoked'),cb.checked?'success':'warning');}
+function grantAll(){document.querySelectorAll('.toggle-switch input').forEach(c=>c.checked=true);notify('All access granted','success');}
+function revokeAll(){document.querySelectorAll('.toggle-switch input').forEach(c=>c.checked=false);notify('All access revoked','warning');}
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4500);}
+</script>
+<style>@media(max-width:768px){.access-layout{grid-template-columns:1fr !important;}}</style>
+</body>
+</html>

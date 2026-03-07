@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Profiles | Tutor Portal</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .student-card{background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--r-xl);padding:1.25rem;transition:all var(--t-normal);}
+    .student-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+    .student-avatar{width:3rem;height:3rem;border-radius:50%;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:1rem;flex-shrink:0;}
+    .student-header{display:flex;align-items:center;gap:0.875rem;margin-bottom:0.875rem;}
+    .student-meta{display:flex;flex-direction:column;gap:0.25rem;}
+    .student-stats-row{display:flex;gap:1.5rem;margin-bottom:0.875rem;}
+    .student-stat{text-align:center;}
+    .student-stat-val{font-size:1.1rem;font-weight:700;color:var(--primary);}
+    .student-stat-label{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;}
+    .search-bar{display:flex;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main"><div class="nav-container"><div class="nav-content">
+  <a href="Tutor-Dashboard-full.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-chalkboard-teacher"></i></div><span class="brand-label">Tutor Portal</span></a>
+  <div class="nav-links">
+    <a href="Tutor-Dashboard-full.html" class="nav-link"><i class="fas fa-home icon"></i><span>Home</span></a>
+    <a href="Tutor-access-student-profile.html" class="nav-link is-active"><i class="fas fa-user-graduate icon"></i><span>Students</span></a>
+    <a href="Tutor-uploads-mangement.html" class="nav-link"><i class="fas fa-upload icon"></i><span>Materials</span></a>
+    <a href="Tutor-Schedule-zoom-meetings.html" class="nav-link"><i class="fas fa-calendar-plus icon"></i><span>Schedule</span></a>
+    <a href="Tutor-View-upcoming-meetings.html" class="nav-link"><i class="fas fa-calendar-check icon"></i><span>Meetings</span></a>
+    <a href="Tutor-manage-student-access.html" class="nav-link"><i class="fas fa-user-shield icon"></i><span>Access</span></a>
+  </div>
+  <div class="nav-actions">
+    <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+    <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+</div></div></nav>
+<div class="grid-container">
+  <div class="page-header"><h1><i class="fas fa-user-graduate text-purple"></i> Student Profiles</h1><p>View and manage your students' progress and details</p></div>
+  <div class="search-bar">
+    <input type="text" class="form-input" style="max-width:300px;" placeholder="Search students…">
+    <select class="form-select" style="max-width:180px;"><option>All Batches</option><option>Batch B2</option><option>Batch B1</option></select>
+    <select class="form-select" style="max-width:180px;"><option>All Status</option><option>Active</option><option>Inactive</option></select>
+  </div>
+  <div class="grid-cards">
+    <!-- Student 1 -->
+    <div class="student-card">
+      <div class="student-header">
+        <div class="student-avatar">JD</div>
+        <div class="student-meta">
+          <div class="font-semibold">John Doe</div>
+          <div class="text-xs text-muted">john@demo.com</div>
+          <span class="badge badge-purple mt-2" style="font-size:0.65rem;">Batch B2</span>
+        </div>
+        <span class="badge badge-green" style="margin-left:auto;">Active</span>
+      </div>
+      <div class="student-stats-row">
+        <div class="student-stat"><div class="student-stat-val">92%</div><div class="student-stat-label">Attendance</div></div>
+        <div class="student-stat"><div class="student-stat-val">A-</div><div class="student-stat-label">Avg Grade</div></div>
+        <div class="student-stat"><div class="student-stat-val">8/12</div><div class="student-stat-label">Assignments</div></div>
+      </div>
+      <div class="progress-bar mb-3"><div class="progress-bar-fill" style="width:87%;"></div></div>
+      <div class="text-xs text-muted mb-3">Progress: 87%</div>
+      <div class="flex gap-sm">
+        <button class="btn btn-primary btn-sm" onclick="notify('Opening profile…','info')"><i class="fas fa-eye"></i> View</button>
+        <a href="https://wa.me/919XXXXXXXXX" target="_blank" class="btn btn-whatsapp btn-sm"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <!-- Student 2 -->
+    <div class="student-card">
+      <div class="student-header">
+        <div class="student-avatar" style="background:linear-gradient(135deg,#059669,#0d9488);">MG</div>
+        <div class="student-meta">
+          <div class="font-semibold">Maria Garcia</div>
+          <div class="text-xs text-muted">maria@demo.com</div>
+          <span class="badge badge-purple mt-2" style="font-size:0.65rem;">Batch B2</span>
+        </div>
+        <span class="badge badge-green" style="margin-left:auto;">Active</span>
+      </div>
+      <div class="student-stats-row">
+        <div class="student-stat"><div class="student-stat-val">85%</div><div class="student-stat-label">Attendance</div></div>
+        <div class="student-stat"><div class="student-stat-val">B+</div><div class="student-stat-label">Avg Grade</div></div>
+        <div class="student-stat"><div class="student-stat-val">7/12</div><div class="student-stat-label">Assignments</div></div>
+      </div>
+      <div class="progress-bar mb-3"><div class="progress-bar-fill" style="width:78%;"></div></div>
+      <div class="text-xs text-muted mb-3">Progress: 78%</div>
+      <div class="flex gap-sm">
+        <button class="btn btn-primary btn-sm" onclick="notify('Opening profile…','info')"><i class="fas fa-eye"></i> View</button>
+        <a href="https://wa.me/919XXXXXXXXX" target="_blank" class="btn btn-whatsapp btn-sm"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <!-- Student 3 -->
+    <div class="student-card">
+      <div class="student-header">
+        <div class="student-avatar" style="background:linear-gradient(135deg,#d97706,#f59e0b);">AK</div>
+        <div class="student-meta">
+          <div class="font-semibold">Alex Kumar</div>
+          <div class="text-xs text-muted">alex@demo.com</div>
+          <span class="badge badge-purple mt-2" style="font-size:0.65rem;">Batch B1</span>
+        </div>
+        <span class="badge badge-orange" style="margin-left:auto;">At Risk</span>
+      </div>
+      <div class="student-stats-row">
+        <div class="student-stat"><div class="student-stat-val" style="color:var(--danger);">62%</div><div class="student-stat-label">Attendance</div></div>
+        <div class="student-stat"><div class="student-stat-val">C+</div><div class="student-stat-label">Avg Grade</div></div>
+        <div class="student-stat"><div class="student-stat-val">5/12</div><div class="student-stat-label">Assignments</div></div>
+      </div>
+      <div class="progress-bar mb-3"><div class="progress-bar-fill warning" style="width:55%;"></div></div>
+      <div class="text-xs text-muted mb-3">Progress: 55% — Needs attention</div>
+      <div class="flex gap-sm">
+        <button class="btn btn-primary btn-sm" onclick="notify('Opening profile…','info')"><i class="fas fa-eye"></i> View</button>
+        <a href="https://wa.me/919XXXXXXXXX" target="_blank" class="btn btn-whatsapp btn-sm"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),4500);}
+</script>
+</body>
+</html>
