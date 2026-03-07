@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | DAxEmpowerApps</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .admin-hero{background:var(--grad-primary);border-radius:var(--r-2xl);padding:2rem;color:white;margin-bottom:var(--sp-2xl);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+    .admin-hero h1{font-size:clamp(1.3rem,3vw,2rem);margin:0 0 0.35rem;}
+    .admin-hero p{opacity:0.85;margin:0;font-size:0.95rem;}
+    .hero-shield{width:4rem;height:4rem;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+    .health-item{display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid var(--border-light);font-size:0.875rem;}
+    .health-item:last-child{border-bottom:none;}
+    .health-dot{width:0.625rem;height:0.625rem;border-radius:50%;background:var(--success);flex-shrink:0;}
+    .health-dot.warn{background:var(--warning);}
+    .health-dot.bad{background:var(--danger);}
+    .batch-row{display:flex;align-items:center;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--border-light);}
+    .batch-row:last-child{border-bottom:none;}
+  </style>
+</head>
+<body class="fade-in">
+<nav class="nav-main">
+  <div class="nav-container"><div class="nav-content">
+    <a href="Admin-Dashboard.html" class="nav-brand"><div class="nav-brand-icon"><i class="fas fa-bolt"></i></div><span class="brand-label">DAxEmpowerApps</span></a>
+    <div class="nav-links">
+      <a href="Admin-Dashboard.html" class="nav-link is-active"><i class="fas fa-gauge-high icon"></i><span>Overview</span></a>
+      <a href="#" class="nav-link" onclick="notify('Students management coming in v2','info')"><i class="fas fa-users icon"></i><span>Students</span></a>
+      <a href="#" class="nav-link" onclick="notify('Tutors management coming in v2','info')"><i class="fas fa-chalkboard-teacher icon"></i><span>Tutors</span></a>
+      <a href="#" class="nav-link" onclick="notify('Zoom settings coming in v2','info')"><i class="fas fa-video icon"></i><span>Zoom</span></a>
+      <a href="#" class="nav-link" onclick="notify('Calendly settings coming in v2','info')"><i class="fas fa-calendar icon"></i><span>Calendly</span></a>
+      <a href="#" class="nav-link" onclick="notify('Role management coming in v2','info')"><i class="fas fa-shield-halved icon"></i><span>Roles</span></a>
+    </div>
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-button"><i class="fas fa-moon icon" id="themeIcon"></i></button>
+      <button id="logoutBtn" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div></div>
+</nav>
+<div class="grid-container">
+  <!-- Hero -->
+  <div class="admin-hero">
+    <div>
+      <h1>Admin Control Panel</h1>
+      <p>Platform overview, user management, and system configuration</p>
+      <div style="display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.15);border-radius:var(--r-full);padding:0.35rem 0.875rem;font-size:0.8rem;margin-top:0.5rem;"><i class="fas fa-circle" style="font-size:0.5rem;color:#4ade80;"></i> All Systems Operational</div>
+    </div>
+    <div class="hero-shield"><i class="fas fa-user-shield"></i></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid-stats">
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-users"></i></div><div class="stats-label">Total Students</div><div class="stats-value" id="totalStudents">126</div><div class="stats-change"><i class="fas fa-arrow-up"></i> +12 this month</div></div>
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-chalkboard-teacher"></i></div><div class="stats-label">Active Tutors</div><div class="stats-value" id="totalTutors">8</div><div class="stats-change"><i class="fas fa-arrow-up"></i> +2 this month</div></div>
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-video"></i></div><div class="stats-label">Active Sessions</div><div class="stats-value" id="activeSessions">32</div><div class="stats-change">+8 today</div></div>
+    <div class="stats-card card-hover"><div class="stats-icon"><i class="fas fa-chart-line"></i></div><div class="stats-label">Success Rate</div><div class="stats-value">94%</div><div class="stats-change"><i class="fas fa-arrow-up"></i> +2% this week</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;" class="admin-main">
+    <!-- Action Cards -->
+    <div>
+      <div class="grid-cards">
+        <div class="card card-hover">
+          <div class="card-header"><div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div><h3 class="card-title">Manage Tutors</h3></div>
+          <p class="card-description">Add, edit, update tutor profiles and permissions.</p>
+          <button onclick="notify('Tutor management — coming in backend phase','info')" class="btn btn-primary btn-full"><i class="fas fa-arrow-right"></i> Open</button>
+        </div>
+        <div class="card card-hover">
+          <div class="card-header"><div class="card-icon" style="background:var(--success);"><i class="fas fa-user-graduate"></i></div><h3 class="card-title">Manage Students</h3></div>
+          <p class="card-description">Create logins, reset access, edit student profiles.</p>
+          <button onclick="notify('Student management — coming in backend phase','info')" class="btn btn-success btn-full"><i class="fas fa-arrow-right"></i> Open</button>
+        </div>
+        <div class="card card-hover">
+          <div class="card-header"><div class="card-icon" style="background:#2563eb;"><i class="fas fa-video"></i></div><h3 class="card-title">Zoom Settings</h3></div>
+          <p class="card-description">Configure Zoom API keys and refresh tokens centrally.</p>
+          <button onclick="notify('Zoom integration — connect via Admin settings','info')" class="btn btn-info btn-full"><i class="fas fa-cog"></i> Configure</button>
+        </div>
+        <div class="card card-hover">
+          <div class="card-header"><div class="card-icon" style="background:var(--warning);"><i class="fas fa-calendar-alt"></i></div><h3 class="card-title">Calendly Settings</h3></div>
+          <p class="card-description">Manage Calendly links and availability per tutor.</p>
+          <button onclick="notify('Calendly admin config — coming in v2','info')" class="btn btn-warning btn-full"><i class="fas fa-cog"></i> Configure</button>
+        </div>
+        <div class="card card-hover">
+          <div class="card-header"><div class="card-icon" style="background:var(--danger);"><i class="fas fa-shield-alt"></i></div><h3 class="card-title">Role Access</h3></div>
+          <p class="card-description">Assign or change roles for Tutors and Students.</p>
+          <button onclick="notify('Role management — Firebase Auth based','info')" class="btn btn-danger btn-full"><i class="fas fa-users-cog"></i> Manage</button>
+        </div>
+        <!-- Export Data -->
+        <div class="card card-hover">
+          <div class="card-header"><div class="card-icon" style="background:#0d9488;"><i class="fas fa-download"></i></div><h3 class="card-title">Export Data</h3></div>
+          <p class="card-description">Download CSV exports for students, tutors, and sessions.</p>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;">
+            <button onclick="exportData('students')" class="btn btn-success btn-full btn-sm"><i class="fas fa-file-csv"></i> Export Students CSV</button>
+            <button onclick="exportData('tutors')" class="btn btn-secondary btn-full btn-sm"><i class="fas fa-file-csv"></i> Export Tutors CSV</button>
+            <button onclick="exportData('sessions')" class="btn btn-outline btn-full btn-sm"><i class="fas fa-file-csv"></i> Export Sessions CSV</button>
+          </div>
+        </div>
+        <!-- Dataset generator -->
+        <div class="card card-hover">
+          <div class="card-header"><div class="card-icon" style="background:var(--primary-dark);"><i class="fas fa-database"></i></div><h3 class="card-title">Assignment Datasets</h3></div>
+          <p class="card-description">Generate anonymised student metadata as CSV for unique assignment datasets.</p>
+          <button onclick="notify('Dataset generator — coming in v2','info')" class="btn btn-primary btn-full"><i class="fas fa-magic"></i> Generate Dataset</button>
+        </div>
+        <!-- Coming Soon -->
+        <div class="card opacity-50 cursor-not-allowed">
+          <div class="card-header"><div class="card-icon" style="background:var(--text-muted);"><i class="fas fa-clipboard-list"></i></div><h3 class="card-title">Access Logs</h3></div>
+          <p class="card-description">Track who made changes and when across the platform.</p>
+          <button disabled class="btn btn-outline btn-full"><i class="fas fa-clock"></i> Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <!-- System Health -->
+      <div class="card mb-4">
+        <div class="card-header"><div class="card-icon" style="background:var(--success);"><i class="fas fa-heartbeat"></i></div><h3 class="card-title">System Health</h3></div>
+        <div class="health-item"><div style="display:flex;align-items:center;gap:0.5rem;"><div class="health-dot"></div>Firebase Auth</div><span class="badge badge-green">Online</span></div>
+        <div class="health-item"><div style="display:flex;align-items:center;gap:0.5rem;"><div class="health-dot"></div>Firestore DB</div><span class="badge badge-green">Online</span></div>
+        <div class="health-item"><div style="display:flex;align-items:center;gap:0.5rem;"><div class="health-dot warn"></div>Zoom API</div><span class="badge badge-orange">Not Configured</span></div>
+        <div class="health-item"><div style="display:flex;align-items:center;gap:0.5rem;"><div class="health-dot warn"></div>Calendly</div><span class="badge badge-orange">Not Configured</span></div>
+        <div class="mt-3"><button class="btn btn-outline btn-full btn-sm" onclick="refreshHealth()"><i class="fas fa-sync-alt"></i> Refresh Status</button></div>
+      </div>
+      <!-- Active Batches -->
+      <div class="card mb-4">
+        <div class="card-header"><div class="card-icon"><i class="fas fa-layer-group"></i></div><h3 class="card-title">Active Batches</h3></div>
+        <div class="batch-row">
+          <div style="flex:1;"><div class="font-semibold text-sm">Batch B2 — 2025</div><div class="text-xs text-muted">14 students • Dr. Sarah Johnson</div></div>
+          <div class="progress-bar" style="width:80px;"><div class="progress-bar-fill" style="width:70%;"></div></div>
+        </div>
+        <div class="batch-row">
+          <div style="flex:1;"><div class="font-semibold text-sm">Batch B1 — 2025</div><div class="text-xs text-muted">10 students • Prof. Michael Chen</div></div>
+          <div class="progress-bar" style="width:80px;"><div class="progress-bar-fill" style="width:90%;"></div></div>
+        </div>
+      </div>
+      <!-- Quick actions -->
+      <div class="card">
+        <div class="card-header"><div class="card-icon" style="background:var(--warning);"><i class="fas fa-bolt"></i></div><h3 class="card-title">Quick Actions</h3></div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <button onclick="refreshData()" class="btn btn-outline btn-sm btn-full"><i class="fas fa-sync-alt"></i> Refresh All Data</button>
+          <button onclick="notify('System is operating normally','success')" class="btn btn-outline btn-sm btn-full"><i class="fas fa-heartbeat"></i> System Status</button>
+          <a href="https://wa.me/919XXXXXXXXX?text=Admin+broadcast%3A+" target="_blank" class="btn btn-whatsapp btn-sm btn-full"><i class="fab fa-whatsapp"></i> Broadcast to All</a>
+          <button onclick="notify('Help docs coming soon','info')" class="btn btn-ghost btn-sm btn-full"><i class="fas fa-question-circle"></i> Help & Docs</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="card mt-5">
+    <div class="card-header"><div class="card-icon"><i class="fas fa-clock-rotate-left"></i></div><h3 class="card-title">Platform Activity</h3></div>
+    <div class="activity-item"><div class="activity-dot green"></div><div class="activity-text">New student "Priya Patel" registered via signup</div><div class="activity-time">30 min ago</div></div>
+    <div class="activity-item"><div class="activity-dot blue"></div><div class="activity-text">Dr. Sarah Johnson uploaded SQL Module 4 materials</div><div class="activity-time">2 hours ago</div></div>
+    <div class="activity-item"><div class="activity-dot purple"></div><div class="activity-text">Batch B2 session completed — 12 students attended</div><div class="activity-time">1 day ago</div></div>
+    <div class="activity-item"><div class="activity-dot orange"></div><div class="activity-text">Student "Alex Kumar" access restricted by tutor</div><div class="activity-time">2 days ago</div></div>
+  </div>
+</div>
+<div id="notif" class="notification-container"></div>
+<script>
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);const btn=document.getElementById('themeToggle'),icon=document.getElementById('themeIcon');function si(th){if(icon)icon.className=th==='dark'?'fas fa-sun icon':'fas fa-moon icon';}si(document.documentElement.getAttribute('data-theme'));if(btn)btn.addEventListener('click',function(){const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);si(n);});})();
+document.getElementById('logoutBtn').addEventListener('click',function(){if(confirm('Log out?')){notify('Logging out…','info');setTimeout(()=>window.location.href='../Unified-Login-Signup-Pages/Unified-login.html',1000);}});
+function refreshData(){notify('Refreshing data…','info');setTimeout(()=>{document.getElementById('totalStudents').textContent=Math.floor(Math.random()*50)+100;document.getElementById('totalTutors').textContent=Math.floor(Math.random()*10)+5;document.getElementById('activeSessions').textContent=Math.floor(Math.random()*20)+25;notify('Data refreshed!','success');},1200);}
+function refreshHealth(){notify('Checking system status…','info');setTimeout(()=>notify('Firebase: Online | Zoom: Config needed | Calendly: Config needed','warning'),1200);}
+function exportData(type){notify('Exporting '+type+' CSV…','info');setTimeout(()=>notify(type.charAt(0).toUpperCase()+type.slice(1)+' CSV exported!','success'),1500);}
+function notify(msg,type='info'){const c=document.getElementById('notif'),n=document.createElement('div');n.className='notification '+type;n.innerHTML=`<span class="notification-msg">${msg}</span><button class="notification-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;c.appendChild(n);setTimeout(()=>n.remove(),5000);}
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='r'){e.preventDefault();refreshData();}});
+</script>
+<style>@media(max-width:768px){.admin-main{grid-template-columns:1fr !important;}}</style>
+</body>
+</html>
